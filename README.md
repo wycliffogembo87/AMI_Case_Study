@@ -27,6 +27,9 @@ It will be your task to improve the todo recommendation logic during this assign
 
 ## Getting started
 
+> We recommend to fork this repository to your GitHub account before you get started,
+> which makes it much easier to hand in the solution when you are done.
+
 
 Ensure you have Elixir 1.14 and Erlang/OTP 25 installed.
 We recommend using [asdf](https://asdf-vm.com/),
@@ -120,7 +123,10 @@ We don't expect the recommendation to be persisted across server restarts.
 
 ## Handing in the solution
 
--  you can send your solution directly by mail to [HR](mailto:brendawakaba@africanmanagers.org),
+- If you have forked this repository, ensure you pushed all your changes and then send
+  a link to your forked repository to [HR](mailto:brendawakaba@africanmanagers.org). Also make sure the repository is publicly accessible.
+
+- Alternatively you can send your solution directly by mail to [HR](mailto:brendawakaba@africanmanagers.org),
 for example as a zip archive.
 Please make sure the solution contains the entire project including the `.git` directory,
 so we can have a look at your commits.
