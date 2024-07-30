@@ -15,7 +15,9 @@ defmodule ExAssignment.Application do
       # Start the PubSub system
       {Phoenix.PubSub, name: ExAssignment.PubSub},
       # Start the Endpoint (http/https)
-      ExAssignmentWeb.Endpoint
+      ExAssignmentWeb.Endpoint,
+      # Start agent based key-value store
+      ExAssignment.KeyValueStore
       # Start a worker by calling: ExAssignment.Worker.start_link(arg)
       # {ExAssignment.Worker, arg}
     ]
