@@ -45,10 +45,24 @@ defmodule ExAssignment.Todos do
   ASSIGNMENT: ...
   """
   def get_recommended() do
-    list_todos(:open)
-    |> case do
-      [] -> nil
-      todos -> Enum.take_random(todos, 1) |> List.first()
+    case ExAssignment.KeyValueStore.get(:recommended_todo) do
+      nil ->
+        list_todos(:open)
+        |> case do
+          [] ->
+            nil
+
+          todos ->
+            recommended_todo =
+              todos
+              |> Enum.take_random(1)
+              |> List.first()
+
+            ExAssignment.KeyValueStore.put(:recommended_todo, recommended_todo)
+        end
+
+      recommended_todo ->
+        recommended_todo
     end
   end
 
