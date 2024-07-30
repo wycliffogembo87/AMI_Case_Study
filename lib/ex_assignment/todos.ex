@@ -53,21 +53,44 @@ defmodule ExAssignment.Todos do
             nil
 
           todos ->
-            IO.inspect(todos)
-
-            recommended_todo =
-              todos
-              |> Enum.take_random(1)
-              |> List.first()
-
+            recommended_todo = get_recommended(todos)
             ExAssignment.KeyValueStore.put(:recommended_todo, recommended_todo)
-
             recommended_todo
         end
 
       recommended_todo ->
         recommended_todo
     end
+  end
+
+  @doc """
+  Returns the next todo that is recommended to be done by the system.
+
+  ## Examples
+
+      iex> get_recommended(todos)
+      %Todo{}
+
+  """
+
+  def get_recommended(todos) do
+    # Get max priority value
+    %{priority: max_priority} = Enum.max_by(todos, & &1.priority)
+    # Create list where highest priority todo gets most slots
+    todos
+    |> Enum.reduce(
+      [],
+      fn %{id: id, priority: priority}, acc ->
+        acc ++
+          List.duplicate(
+            id,
+            round(max_priority / priority * 100)
+          )
+      end
+    )
+    |> Enum.shuffle()
+    |> Enum.random()
+    |> get_todo!()
   end
 
   @doc """
