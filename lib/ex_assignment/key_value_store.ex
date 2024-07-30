@@ -21,4 +21,11 @@ defmodule ExAssignment.KeyValueStore do
   def put(key, value) do
     Agent.update(__MODULE__, &Map.put(&1, key, value))
   end
+
+  @doc """
+  Deletes the `value` for the given `key` from the `key_value_store`.
+  """
+  def delete(key) do
+    Agent.update(__MODULE__, &Map.delete(&1, key))
+  end
 end

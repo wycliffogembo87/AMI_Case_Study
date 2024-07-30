@@ -53,12 +53,16 @@ defmodule ExAssignment.Todos do
             nil
 
           todos ->
+            IO.inspect(todos)
+
             recommended_todo =
               todos
               |> Enum.take_random(1)
               |> List.first()
 
             ExAssignment.KeyValueStore.put(:recommended_todo, recommended_todo)
+
+            recommended_todo
         end
 
       recommended_todo ->
@@ -131,7 +135,19 @@ defmodule ExAssignment.Todos do
 
   """
   def delete_todo(%Todo{} = todo) do
-    Repo.delete(todo)
+    case Repo.delete(todo) do
+      {:ok, %{id: id}} = results ->
+        recommended_todo = ExAssignment.KeyValueStore.get(:recommended_todo)
+
+        if not is_nil(recommended_todo) and to_string(recommended_todo.id) == to_string(id) do
+          ExAssignment.KeyValueStore.delete(:recommended_todo)
+        end
+
+        results
+
+      {:error, _changeset} = results ->
+        results
+    end
   end
 
   @doc """
@@ -160,6 +176,12 @@ defmodule ExAssignment.Todos do
     {_, _} =
       from(t in Todo, where: t.id == ^id, update: [set: [done: true]])
       |> Repo.update_all([])
+
+    recommended_todo = ExAssignment.KeyValueStore.get(:recommended_todo)
+
+    if not is_nil(recommended_todo) and to_string(recommended_todo.id) == to_string(id) do
+      ExAssignment.KeyValueStore.delete(:recommended_todo)
+    end
 
     :ok
   end
